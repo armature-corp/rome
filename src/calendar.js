@@ -4,6 +4,7 @@ var crossvent = require('crossvent');
 var emitter = require('contra/emitter');
 var dom = require('./dom');
 var text = require('./text');
+var value = require('./value');
 var parse = require('./parse');
 var clone = require('./clone');
 var defaults = require('./defaults');
@@ -132,7 +133,7 @@ function calendar (calendarOptions) {
 
   function eventListening (remove) {
     var op = remove ? 'remove' : 'add';
-    if (o.autoHideOnBlur) { crossvent[op](document.documentElement, 'focus', hideOnBlur, true); }
+    //if (o.autoHideOnBlur) { crossvent[op](document.documentElement, 'focus', hideOnBlur, true); }
     if (o.autoHideOnClick) { crossvent[op](document, 'click', hideOnClick); }
   }
 
@@ -216,10 +217,11 @@ function calendar (calendarOptions) {
     back = dom({ type: 'button', className: o.styles.back, attributes: { type: 'button' }, parent: yearWrapper });
     next = dom({ type: 'button', className: o.styles.next, attributes: { type: 'button' }, parent: yearWrapper });
 
-    currentYear = dom({ className: o.styles.yearLabel, parent: yearWrapper});
+    currentYear = dom({ type: 'input', className: 'year-input', attributes: { type: 'number' }, parent: yearWrapper });
 
     crossvent.add(back, 'click', subtractYear);
     crossvent.add(next, 'click', addYear);
+    crossvent.add(currentYear, 'change', setYear);
   }
 
   function renderTime () {
@@ -362,6 +364,22 @@ function calendar (calendarOptions) {
     api.emit(op === 'add' ? 'nextYear' : 'backYear', ref.year());
   }
 
+  /*
+    hack to allow direct manipulation of the year
+    will not check for valid bounds
+  */
+  function setYear( evt ) {
+    var year = evt.target.value;
+    var yearAsNumber = evt.target.valueAsNumber;
+    if( year.length === 4 && yearAsNumber ) {
+      ref.year( yearAsNumber );
+      refCal.year( yearAsNumber );
+      update();
+    } else {
+      evt.target.value = refCal.year();
+    }
+  }
+
   function update (silent) {
     updateCalendar();
     updateTime();
@@ -396,7 +414,7 @@ function calendar (calendarOptions) {
     }
 
     function updateYear () {
-      text(currentYear, lastYear);
+      value(currentYear, lastYear);
     }
   }
 

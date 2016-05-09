@@ -32,7 +32,6 @@ function inputCalendar (input, calendarOptions) {
 
     classes.add(api.container, o.styles.positioned);
     crossvent.add(api.container, 'mousedown', containerMouseDown);
-    crossvent.add(api.container, 'click', containerClick);
 
     api.getDate = unrequire(api.getDate);
     api.getDateString = unrequire(api.getDateString);
