@@ -133,7 +133,7 @@ function calendar (calendarOptions) {
 
   function eventListening (remove) {
     var op = remove ? 'remove' : 'add';
-    //if (o.autoHideOnBlur) { crossvent[op](document.documentElement, 'focus', hideOnBlur, true); }
+    if (o.autoHideOnBlur) { crossvent[op](document.documentElement, 'focus', hideOnBlur, true); }
     if (o.autoHideOnClick) { crossvent[op](document, 'click', hideOnClick); }
   }
 
@@ -170,8 +170,6 @@ function calendar (calendarOptions) {
 
     datewrapper = dom({ className: o.styles.date, parent: container });
 
-    renderYear(datewrapper);
-
     for (i = 0; i < o.monthsInCalendar; i++) {
       renderMonth(i);
     }
@@ -182,13 +180,18 @@ function calendar (calendarOptions) {
 
     function renderMonth (i) {
       var month = dom({ className: o.styles.month, parent: datewrapper });
+      
+      var header = dom({ className: o.styles.header, parent: month });
       if (i === 0) {
-        back = dom({ type: 'button', className: o.styles.back, attributes: { type: 'button' }, parent: month });
+        back = dom({ type: 'button', className: o.styles.back, attributes: { type: 'button' }, parent: header });
       }
       if (i === o.monthsInCalendar -1) {
-        next = dom({ type: 'button', className: o.styles.next, attributes: { type: 'button' }, parent: month });
+        next = dom({ type: 'button', className: o.styles.next, attributes: { type: 'button' }, parent: header });
       }
-      var label = dom({ className: o.styles.monthLabel, parent: month });
+
+      var label = dom({ className: o.styles.monthLabel, parent: header });
+      renderYear(header);
+      
       var date = dom({ type: 'table', className: o.styles.dayTable, parent: month });
       var datehead = dom({ type: 'thead', className: o.styles.dayHead, parent: date });
       var dateheadrow = dom({ type: 'tr', className: o.styles.dayRow, parent: datehead });
@@ -214,13 +217,7 @@ function calendar (calendarOptions) {
     var y = ref.year();
     var yearWrapper = dom({ className: o.styles.year, parent: parent});
 
-    back = dom({ type: 'button', className: o.styles.back, attributes: { type: 'button' }, parent: yearWrapper });
-    next = dom({ type: 'button', className: o.styles.next, attributes: { type: 'button' }, parent: yearWrapper });
-
-    currentYear = dom({ type: 'input', className: 'year-input', attributes: { type: 'number' }, parent: yearWrapper });
-
-    crossvent.add(back, 'click', subtractYear);
-    crossvent.add(next, 'click', addYear);
+    currentYear = dom({ type: 'input', className: o.styles.yearInput, attributes: { type: 'number' }, parent: yearWrapper });
     crossvent.add(currentYear, 'change', setYear);
   }
 

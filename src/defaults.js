@@ -102,6 +102,8 @@ function defaults (options, cal) {
   if (styl.time === no) { styl.time = 'rd-time'; }
   if (styl.timeList === no) { styl.timeList = 'rd-time-list'; }
   if (styl.timeOption === no) { styl.timeOption = 'rd-time-option'; }
+  if (styl.yearInput === no) { styl.yearInput = 'rd-year-input'; }
+  if (styl.header === no) { styl.header = 'rd-header'; }
 
   return o;
 }

@@ -1,6 +1,6 @@
 /**
  * rome - Customizable date (and time) picker. Opt-in UI, no jQuery!
- * @version v2.1.25
+ * @version v2.1.26
  * @link https://github.com/bevacqua/rome
  * @license MIT
  */
@@ -91,4 +91,15 @@
 }
 .rd-day-concealed {
   visibility: hidden;
+}
+.rd-month-label {
+  display: inline-block;
+}
+.rd-year {
+  display: inline-block;
+  margin-left: 15px;
+}
+.rd-year-input {
+  width: 50px;
+  text-align: center;
 }
