@@ -9,6 +9,15 @@ rome(t, { date: false });
 rome(mms, { monthsInCalendar: 2 });
 rome(bby, { showYears: true });
 
+rome(leftYearRange, {
+  showYears: true,
+  dateValidator: rome.val.beforeEq(rightYearRange)
+});
+rome(rightYearRange, {
+  showYears: true,
+  dateValidator: rome.val.afterEq(leftYearRange)
+});
+
 var picker = rome(ind);
 
 if (toggle.addEventListener) {

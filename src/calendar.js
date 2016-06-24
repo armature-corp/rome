@@ -361,14 +361,11 @@ function calendar (calendarOptions) {
     api.emit(op === 'add' ? 'nextYear' : 'backYear', ref.year());
   }
 
-  /*
-    hack to allow direct manipulation of the year
-    will not check for valid bounds
-  */
   function setYear( evt ) {
     var year = evt.target.value;
     var yearAsNumber = evt.target.valueAsNumber;
-    if( year.length === 4 && yearAsNumber ) {
+    var validYear = o.dateValidator( ref.clone().year(yearAsNumber) ) && year.length === 4;
+    if( yearAsNumber && validYear ) {
       ref.year( yearAsNumber );
       refCal.year( yearAsNumber );
       update();

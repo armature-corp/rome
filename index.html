@@ -68,6 +68,24 @@ rome(input, { showYears: true } );
     </pre>
   </div>
   <div class='parent'>
+    <label for='yrange'>Range with years: </label>
+    <input id='leftYearRange' class='input'>
+    <input id='rightYearRange' class='input'>
+    <pre>
+      <code>
+rome(leftYearRange, {
+  showYears: true,
+  dateValidator: rome.val.beforeEq(rightYearRange)
+});
+
+rome(rightYearRange, {
+  showYears: true,
+  dateValidator: rome.val.afterEq(leftYearRange)
+});
+      </code>
+    </pre>
+  </div>
+  <div class='parent'>
     <label for='mms'>Want to display two contiguous months instead of just one?</label>
     <input id='mms' class='input' />
     <pre>
