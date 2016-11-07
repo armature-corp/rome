@@ -122,6 +122,8 @@ function calendar (calendarOptions) {
     api.restore = init;
     api.setValue = napi;
     api.show = napi;
+    api.nextYear = noop;
+    api.backYear = noop;
     api.off();
 
     if (silent !== true) {
@@ -176,11 +178,10 @@ function calendar (calendarOptions) {
 
     crossvent.add(back, 'click', subtractMonth);
     crossvent.add(next, 'click', addMonth);
-    crossvent.add(datewrapper, 'click', pickDay);
 
     function renderMonth (i) {
       var month = dom({ className: o.styles.month, parent: datewrapper });
-      
+
       var header = dom({ className: o.styles.header, parent: month });
       if (i === 0) {
         back = dom({ type: 'button', className: o.styles.back, attributes: { type: 'button' }, parent: header });
@@ -190,12 +191,20 @@ function calendar (calendarOptions) {
       }
 
       var label = dom({ className: o.styles.monthLabel, parent: header });
-      renderYear(header);
-      
+      //renderYear(header);
+      if(o.showYears) {
+        var y = ref.year();
+        var yearWrapper = dom({ className: o.styles.year, parent: header});
+        currentYear = dom({ type: 'input', className: o.styles.yearInput, attributes: { type: 'number' }, parent: yearWrapper, value: y });
+        crossvent.add(currentYear, 'change', setYear);
+      }
+
       var date = dom({ type: 'table', className: o.styles.dayTable, parent: month });
       var datehead = dom({ type: 'thead', className: o.styles.dayHead, parent: date });
       var dateheadrow = dom({ type: 'tr', className: o.styles.dayRow, parent: datehead });
       var datebody = dom({ type: 'tbody', className: o.styles.dayBody, parent: date });
+      crossvent.add(datebody, 'click', pickDay);
+
       var j;
 
       for (j = 0; j < weekdayCount; j++) {
@@ -211,14 +220,16 @@ function calendar (calendarOptions) {
   }
 
   function renderYear (parent) {
-    if(!o.showYears) {
-      return;
-    }
-    var y = ref.year();
-    var yearWrapper = dom({ className: o.styles.year, parent: parent});
+    // if(!o.showYears) {
+    //   return;
+    // }
+    // var y = ref.year();
+    // var yearWrapper = dom({ className: o.styles.year, parent: parent});
 
-    currentYear = dom({ type: 'input', className: o.styles.yearInput, attributes: { type: 'number' }, parent: yearWrapper });
-    crossvent.add(currentYear, 'change', setYear);
+    // currentYear = dom({ type: 'input', className: o.styles.yearInput, attributes: { type: 'number' }, parent: yearWrapper, value: y });
+    // console.log( 'before set' );
+    // crossvent.add(currentYear, 'change', setYear);
+    // console.log( 'after set' );
   }
 
   function renderTime () {
@@ -364,7 +375,22 @@ function calendar (calendarOptions) {
   function setYear( evt ) {
     var year = evt.target.value;
     var yearAsNumber = evt.target.valueAsNumber;
-    var validYear = o.dateValidator( ref.clone().year(yearAsNumber) ) && year.length === 4;
+    var validYear = false;
+
+    if( o.dateValidator ) {
+      validYear = o.dateValidator( ref.clone().year(yearAsNumber) ) && year.length === 4;
+    } else {
+      validYear = year.length === 4;
+    }
+
+    /*
+      undefined means the validator
+      was not able to do anything
+    */
+    if( validYear === undefined ) {
+      validYear = true;
+    }
+
     if( yearAsNumber && validYear ) {
       ref.year( yearAsNumber );
       refCal.year( yearAsNumber );
