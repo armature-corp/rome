@@ -356,7 +356,7 @@ function calendar (calendarOptions) {
     bound = inRange(refCal.clone());
     ref = bound || ref;
     if (bound) { refCal = bound.clone(); }
-    update();
+    update(true); // silent update will not auto select the date just because we changed the month
     api.emit(op === 'add' ? 'next' : 'back', ref.month());
   }
 
