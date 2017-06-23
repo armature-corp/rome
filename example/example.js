@@ -1,6 +1,10 @@
 var moment = rome.moment;
 
-rome(dt);
+rome(dt, {
+  badInputHandler: function(value) {
+    console.log( value );
+  }
+});
 rome(ivi);
 rome(ivp, { initialValue: '2014-12-08 08:36' });
 rome(sm, { weekStart: 1 });

@@ -125,7 +125,7 @@ function inputCalendar (input, calendarOptions) {
       return;
     }
     var date = momentum.moment(value, o.inputFormat, o.strictParse);
-    api.setValue(date);
+    api.setValue(date, true);
   }
 
   function updateInput (data) {
