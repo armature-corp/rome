@@ -94,7 +94,11 @@ function inputCalendar (input, calendarOptions) {
 
   function invalidateInput () {
     if (!ignoreInvalidation && !isEmpty()) {
-      api.emitValues();
+      if( o.badInputHandler ) {
+        o.badInputHandler( input.value );
+      } else {
+        api.emitValues();
+      }
     }
   }
 
