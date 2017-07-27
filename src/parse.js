@@ -15,8 +15,12 @@ function raw (date, format) {
 }
 
 function parse (date, format) {
-  var m = raw(date, typeof format === 'string' ? format : null);
-  return m && m.isValid() ? m : null;
+  if( typeof format !== 'string' ) {
+    format = null;
+  }
+
+  var m = momentum.moment( date, format, true );
+  return m.isValid() ? m : null;
 }
 
 module.exports = parse;

@@ -94,7 +94,8 @@ function inputCalendar (input, calendarOptions) {
 
   function invalidateInput () {
     if (!ignoreInvalidation && !isEmpty()) {
-      if( o.badInputHandler ) {
+      var mom = momentum.moment(input.value, o.inputFormat, o.strictParse);
+      if( o.badInputHandler && !mom.isValid() ) {
         o.badInputHandler( input.value );
       } else {
         api.emitValues();
@@ -129,7 +130,8 @@ function inputCalendar (input, calendarOptions) {
       return;
     }
     var date = momentum.moment(value, o.inputFormat, o.strictParse);
-    api.setValue(date, true);
+
+    api.setValue(date);
   }
 
   function updateInput (data) {

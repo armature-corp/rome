@@ -19,7 +19,6 @@ function calendar (calendarOptions) {
   var refCal;
   var container;
   var rendered = false;
-  var badInput = null;
 
   // date variables
   var monthOffsetAttribute = 'data-rome-offset';
@@ -292,15 +291,6 @@ function calendar (calendarOptions) {
   function hideCalendar () {
     if (container.style.display !== 'none') {
       container.style.display = 'none';
-
-      // if we have bad input we want to inform
-      // the badInputHandler of the bad input
-      if( badInput && o.badInputHandler ) {
-        setValue(null);
-        api.emit('data', null);
-        o.badInputHandler( badInput );
-      }
-
       api.emit('hide');
     }
   }
@@ -518,12 +508,9 @@ function calendar (calendarOptions) {
 
   function setValue (value) {
     var date = parse(value, o.inputFormat);
-    if (date === null) {
-      badInput = value;
+    if( !date ) {
       return;
     }
-
-    badInput = null;
 
     ref = inRange(date) || ref;
     refCal = ref.clone();

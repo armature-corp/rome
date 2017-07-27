@@ -3,7 +3,8 @@ var moment = rome.moment;
 rome(dt, {
   badInputHandler: function(value) {
     console.log( value );
-  }
+  },
+  strictParse: true
 });
 rome(ivi);
 rome(ivp, { initialValue: '2014-12-08 08:36' });
