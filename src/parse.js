@@ -4,7 +4,7 @@ var momentum = require('./momentum');
 
 function raw (date, format) {
   if (typeof date === 'string') {
-    return momentum.moment(date, format);
+    return momentum.moment(date, format, true);
   }
   if (Object.prototype.toString.call(date) === '[object Date]') {
     return momentum.moment(date);
@@ -15,12 +15,8 @@ function raw (date, format) {
 }
 
 function parse (date, format) {
-  if( typeof format !== 'string' ) {
-    format = null;
-  }
-
-  var m = momentum.moment( date, format, true );
-  return m.isValid() ? m : null;
+  var m = raw(date, typeof format === 'string' ? format : null);
+  return m && m.isValid() ? m : null;
 }
 
 module.exports = parse;
